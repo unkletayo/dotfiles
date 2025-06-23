@@ -5,3 +5,27 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
+
+
+export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+
+
+# Prefer latest installed versioned PostgreSQL
+POSTGRES_BIN=$(ls -d "$(brew --prefix)/opt"/postgresql@*/bin 2>/dev/null | sort -Vr | head -n1)
+
+# Fallback to unversioned if none found
+if [ -z "$POSTGRES_BIN" ]; then
+  POSTGRES_BIN="$(brew --prefix)/opt/postgresql/bin"
+fi
+
+export PATH="$POSTGRES_BIN:$PATH"
+
+echo "[.zprofile] PostgreSQL bin added to PATH: $POSTGRES_BIN"
+
+export PATH="$HOME/.console-ninja/.bin:$PATH"
+
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
